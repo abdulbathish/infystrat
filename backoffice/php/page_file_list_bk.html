@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>User Type</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<script language="javascript">
+function chk_frm_val()
+{
+	var photocatname = document.getElementById("txttypename");
+	var paravalue = document.getElementById("paravalue");
+	if(photocatname.value=="")
+	{
+		alert("User authentication should not be blank !");
+		photocatname.focus();
+		return false;
+	}
+	if(paravalue.value=="")
+	{
+		alert("Parameter value should not be blank !");
+		paravalue.focus();
+		return false;
+	}
+}//function chk_frm_val()
+function fnSelect(obj)
+{	
+	var comfList = document.forms[obj].elements["checkList[]"];		
+	var chkvalue;
+	if (comfList.length>0) {        
+		var selected = false;   
+		for (var i = 0; i < comfList.length; i++) {
+			if(comfList[i].checked == true)
+			 {
+				selected = true; 
+				chkvalue=comfList[i].value + "," + chkvalue;
+			 }
+		}
+		if (!selected) {             
+			alert('Please select atleast one user authentication.');              
+			return false;         
+		}
+	}
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=user_authentication_delete&id="+chkvalue;		
+	}
+} //function fnSelect(obj)
+function fnSerach()
+{	
+	document.frmdownload_category.submit();
+}	
+function add_new()
+{	
+	document.location.href="index.php?page=user_authentication_list";
+	//alert(document.getElementById("typename"));
+	var photocatname = document.getElementById("txttypename");
+	photocatname.value='';
+	photocatname.focus();
+	return false;
+}//function add_new()
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<form method="post" id="frmdownload_category" name="frmdownload_category" action="index.php?page=page_file_list">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<?php if($_GET['msg']!='') { ?>
+		<tr>
+			<th class="admin_success_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg]?></th>		
+		</tr>
+		<?php } ?>
+		<?php if($_GET['msg_error']!='') { ?>
+		<tr>
+			<th class="admin_error_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg_error]?></th>		
+		</tr>
+		<?php } ?>
+		<tr>
+			<td colspan="3">
+				<table width="100%" border="0" cellspacing="1" cellpadding="1">
+					<tr>
+					<td width="82%" align="left" id="title_head">Page-File Management</td>
+					<!--<td width="18%" align="right"><a href="index.php?page=admin_master"><strong>&laquo; Back</strong></a></td>-->
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php 
+			$sql_page1="select id, page_title from general_pages order by id ASC";
+			$qry_page1=q($sql_page1,$dbconnect);
+		?>
+		<tr>
+			<th align="center" height="22" colspan="3">
+				<table width="100%" border="0" cellspacing="2" cellpadding="1" align="left">
+					<tr>	
+					<input type="hidden" name="id" id="id" value="<?php echo $_GET[id]?>">
+					<td width="75%"  align="left" valign="top" >
+						<strong>Page Title:</strong>&nbsp;&nbsp;
+						<select name="page_id" id="page_id">
+						<option value="">Select Page</option>
+						<?php while($page1=f($qry_page1)){?>
+							<option value="<?php echo $page1['id']; ?>" <?php if($page_id==$page1[id]){?>selected="selected"<?php }?>><?php echo $page1['page_title'];?></option>
+						<?php }?>
+						</select>&nbsp;&nbsp;
+						
+						<strong>File Name:</strong>&nbsp;&nbsp;
+						<input type="text" name="file_name" id="file_name" size="40" maxlength="50" value="<?php echo $page_file_name;?>" >&nbsp;&nbsp;
+						
+						<input type="submit" name="btn_submit" class="input-button" value="<?php echo $button_name; ?>&nbsp; " 
+						onClick="return chk_frm_val();">
+					</td>
+					<td width="5%" align="left" valign="top"></td>				
+					<?php if($id!="") {?>
+					<!--<td width="20%" align="right" valign="top">&nbsp;&nbsp;
+						<input type="button" name="btn_addnew" class="input-button" value="Add New"	onClick="return add_new();">&nbsp;&nbsp;
+						<input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frmdownload_category');">
+					</td>-->
+					<?php } else { ?>
+					<!--<td width="14%" align="right" valign="top">
+						<input type="button"  class="input-button" name="btn1" value="Delete" 
+						onClick="javascript:fnSelect('frmdownload_category');">
+					</td>-->   
+					<?php } ?>				
+					</tr>				
+				</table>
+			</th>
+		<tr>	
+	</table>	
+	<table width="100%" border="0" cellpadding="0" cellspacing="2" class="table_class"> 
+		<tr class="table_title">
+			<td width="5%"  height=22 align="center" >Sr.No.</td>
+			<td width="40%" height=22 align="left">&nbsp;&nbsp;Page Title</td>
+			<td width="35%" height=22 align="center">File Name</td>
+			<td width="10%" height=22 align="center">&nbsp;</td>
+		</tr>
+	<?php echo $text; ?>
+		<tr>
+			<td align="center" valign="top" colspan="2">&nbsp;</td>
+			<!--<td align="center" valign="top" >
+			<input type="submit" class="input-button" name="updateOrder" value="Update" onClick="UpdateOrder();" />
+			</td>-->		
+			<td align="center" valign="top" colspan="3">&nbsp;</td>
+		</tr>
+	    
+    <tr class="table_title">
+	    <td height=22 colspan="9" align="right"><?php echo $pageList; ?></td>
+      </tr>
+      
+	</table>
+	</th>
+	</tr>
+	</table>
+</form>
+</body>
+</html>

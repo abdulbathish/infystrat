@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Change Password</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script>
+	function NullChk()
+	{
+		var np = document.getElementById("new_pwd").value;
+		var cnp = document.getElementById("confirm_pwd").value;
+	    if(np == "" || cnp =="")
+		{
+				alert("Please enter new password!!");
+				return false;
+		}		
+		else 
+		    return true;
+		
+	
+	}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table_class">
+<?php if($_GET['msg']!='') { ?>
+<tr>
+	<th class="admin_success_msg" height=22 align="center"><?php echo $_GET['msg']?></th>		
+</tr>
+<?php } ?>
+<?php if($_GET['msg_error']!='') { ?>
+<tr>
+	<th class="admin_error_msg" height=22 align="center"><?php echo $_GET['msg_error']?></th>		
+</tr>
+<?php } ?>
+  <tr class='table_title'> 
+    <td align="left" height=22> Change Password </td>
+  </tr>
+    <td valign="top">
+      <div align="center"> 
+<form name="frm_changepassowrd" method="post" action="" onSubmit="return NullChk();">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" >
+<tr class='table_row'>
+	<td width="20%"><strong>New password * </strong></td>
+	<td><input type="password" name="new_pwd" id="new_pwd" value=""></td>
+</tr>
+<tr class='table_row'>
+	<td><strong>Confirm password * </strong></td>
+	<td><input type="password" name="confirm_pwd" id="confirm_pwd" value=""></td>
+</tr>
+<tr class='table_row'>
+	<td>&nbsp;</td>
+	<td><input  class="input-button" type="submit" name="btnSubmit" value="Change Password"></td>
+</tr>
+</table>
+</form>			
+	  </div>
+    </td>
+  </tr>
+   
+</table>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Social Media Links Management</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="table_class">
+<?php if($_GET['msg']!='') { ?>
+<tr>
+	<th class="admin_success_msg" height=22 align="center"><?php echo $_GET['msg']?></th>		
+</tr>
+<?php } ?>
+<?php if($_GET['msg_error']!='') { ?>
+<tr>
+	<th class="admin_error_msg" height=22 align="center"><?php echo $_GET['msg_error']?></th>		
+</tr>
+<?php } ?>
+  <tr class='table_title'> 
+    <td align="left" height=22>Social Media Links Management</td>
+  </tr>
+    <td valign="top">
+      <div align="center"> 
+<form name="frm_changepassowrd" method="post" action="">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+<table width="100%" border="0" cellspacing="2" cellpadding="2" >
+
+<tr class='table_row'>
+	<td width="30%"><b>Link Name</b></td>
+	<td width="70%"><b>Link Url</b></td>
+</tr>
+
+<tr class='table_row'>
+	<td>
+    <input type="text" name="link_title1" id="link_title1" size="40" value="<?php echo utf8_decode($res_row['link_title1']); ?>" maxlength="60">
+    </td>
+	<td>
+	<textarea name="link_url1" id="link_url1" rows="3" cols="57"><?php echo utf8_decode($res_row['link_url1']);?></textarea>
+	</td>
+</tr>
+
+
+<tr class='table_row'>
+	<td>
+    <input type="text" name="link_title2" id="link_title2" size="40" value="<?php echo utf8_decode($res_row['link_title2']); ?>" maxlength="60">
+    </td>
+	<td>
+	<textarea name="link_url2" id="link_url2" rows="3" cols="57"><?php echo utf8_decode($res_row['link_url2']);?></textarea>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>
+    <input type="text" name="link_title3" id="link_title3" size="40" value="<?php echo utf8_decode($res_row['link_title3']); ?>" maxlength="60">
+    </td>
+	<td>
+	<textarea name="link_url3" id="link_url3" rows="3" cols="57"><?php echo utf8_decode($res_row['link_url3']);?></textarea>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>
+    <input type="text" name="link_title4" id="link_title4" size="40" value="<?php echo utf8_decode($res_row['link_title4']); ?>" maxlength="60">
+    </td>
+	<td>
+	<textarea name="link_url4" id="link_url4" rows="3" cols="57"><?php echo utf8_decode($res_row['link_url4']);?></textarea>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>
+    <b>Twitter Like Script</b>
+    </td>
+	<td>
+	<textarea name="link_url5" id="link_url5" rows="9" cols="70"><?php echo utf8_decode($res_row['link_url5']);?></textarea>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>&nbsp;</td>
+	<td><input  class="input-button" type="submit" name="btnSubmit" value="Update"></td>
+</tr>
+</table>
+</form>			
+	  </div>
+    </td>
+  </tr>
+   
+</table>
+</body>
+</html>

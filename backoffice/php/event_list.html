@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>News & Event List</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<script language="javascript">
+function fnSelect(obj)
+{
+		var comfList = document.forms[obj].elements["checkList[]"];		
+		var chkvalue;
+		if (comfList.length) {        
+			var selected = false;   
+			for (var i = 0; i < comfList.length; i++) {
+				if(comfList[i].checked == true)
+				 {
+					selected = true; 
+					chkvalue=comfList[i].value + "," + chkvalue;
+				 }
+			}
+			if (! selected) {             
+				alert('Please Select the event.');
+				return false;         
+			}
+		}
+		var ans=confirm("Are you sure you want to delete?");
+		if(ans)
+		{
+			document.location.href="index.php?page=event_delete&id="+chkvalue;		
+		}
+}
+function fnSerach()
+{	
+	document.frm1.submit();
+}
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<form method="post" id="frm1" name="frm1" action="index.php?page=event_list">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<?php  if($_GET[msg]!='') { ?>
+	<tr>
+	<th class="admin_success_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg]?></th>		
+	</tr>
+	<?php  } ?>
+	<?php  if($_GET[msg_error]!='') { ?>
+	<tr>
+	<th class="admin_error_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg_error]?></th>		
+	</tr>
+	<?php  } ?>
+	<tr class="3">
+	 	<td id="title_head" colspan="3">News & Event List</td>
+	</tr>
+	  <tr>
+		<th align="Center" height="22">
+		<div id="search">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td class="search_lbl"><strong>Search :</strong></td>
+			<td><input type="text" name="search"  value="<?php echo $name?>"></td> 
+			<td><img  name="btnserach" class="input" src="images/button_search.jpg" style="cursor:pointer;" onClick="javascript: fnSerach();"/></td>
+			</tr>
+			</table>
+		</div>
+		</th>	
+	<th><a href="index.php?page=event_details" class="addepages-link">Add News & Event</a></th>	 
+	<th align="right" colspan="2"> 
+	<input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frm1');"> 
+	</th>
+	<tr>
+	</table>
+	
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select sortable table_class"> 
+	  <tr class="table_title">
+		<td align="center" height=22 width="5%" style="border-right:1px solid #fff;">Sr.No.</td>
+		<td width="20%" height=22 align="left" style="border-right:1px solid #fff;"> News & Event Name</td>
+		<td width="5%" height=22 align="center" style="border-right:1px solid #fff;">Date</td>
+		<td width="5%" align="center" style="border-right:1px solid #fff;">Position</td>
+		<td width="5%" height=22 align="center" style="border-right:1px solid #fff;">Status</td>
+		<td width="5%" height=22 align="center" style="border-right:1px solid #fff;">Edit</td>
+		<td width="5%" height=22 align="center">
+			<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" onClick="javascript:check_all('frm1', this);">		 
+		</td>
+	 </tr>
+	 <?php echo $text; ?>
+	 <tr>
+	    <td height=22 colspan="3"></td>
+		<td align="center"><input type="submit" class="input-button" name="updateOrder" value="update" onClick="UpdateOrder();" /></td>
+		<td height=22 colspan="4"></td>
+      </tr>
+	 <tr class="table_title">
+	    <td height=22 colspan="8" align="right"><?php echo $pageList; ?></td>
+      </tr>
+	</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>Contact Deails</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1"> 
+<script language="javascript">
+function fndelete() {
+   var ans=confirm("Are you sure you want to delete?");
+   var token = document.getElementById('token').value;
+	if(ans)
+	{ 
+	 document.location.href="index.php?page=contactus_delete&singleid=<?php echo $_GET[cid]?>&token="+token;
+	} 
+}
+</script>
+<script language="javascript">
+function chk_validation()
+{
+	var name = document.getElementById("name");
+	var email = document.getElementById("email");
+	var message = document.getElementById("message");
+	
+	if(name.value=="")
+	{
+		alert("Name should not be blank.");
+		name.focus();
+		return false;
+	}
+	
+	if(email.value=="")
+	{
+		alert("Email should not be blank.");
+		email.focus();
+		return false;
+	}else{
+		var stremail = (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/).test(email.value);
+		if(stremail == false)
+		{			
+			alert("Please enter valid email Id.");
+			email.focus();
+			return false;
+		}
+	}
+	
+	if(message.value=="")
+	{
+		alert("Message should not be blank.");
+		message.focus();
+		return false;
+	}
+	
+	if(phone.value=="")
+	{
+		alert("phone number should not be blank.");
+		phone.focus();
+		return false;
+	}
+	
+}
+</script>
+</head>
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="contact_frm" action="index.php?page=contactus_update" method="post">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="table_class">
+<tr class="table_title">
+	<td colspan="2" align="left">Contact Details</td>
+	<input type="hidden" name="id" value="<?php echo $_GET[cid] ?>">
+</tr>   
+
+<tr class='table_row'>
+<td width="22%"><b> Name : </b></td>
+<td width="78%"><?php echo $fname; ?></td>
+</tr>
+
+<tr class='table_row'>
+<td><b>Email Id : </b></td>
+<td><?php echo $email; ?></td>
+</tr> 
+
+<tr class='table_row'>
+<td><b>Phone : </b></td>
+<td><?php echo $phone; ?></td>
+</tr> 
+
+<tr class='table_row'>
+<td><b>Subject : </b></td>
+<td><?php echo $subject; ?></td>
+</tr> 
+
+<tr class='table_row'>
+<td valign="top"><b>Message : </b></td>
+<td><?php echo $message; ?>
+</td>
+</tr>
+
+<?php if($contact_date!=""){?>
+<tr class='table_row'>
+<td valign="top"><b>Contact Date : </b></td>
+<td> <p><?php echo $contact_date; ?></p>
+</td>
+</tr> 
+<?php }?>
+
+<tr class='table_row'>
+<td>&nbsp;</td>
+<td align="left">
+	  
+<?php if ($_GET[cid]!= '') {?>
+	<input class="input-button" type="button" name="btndelete" value="Delete Contact" onClick="fndelete();">
+ <?php  } ?>
+	&nbsp;<a href="index.php?page=contactus"><b>&laquo; Back</b></a>
+</td>
+</tr> 
+<tr>
+<td colspan="2" class='table_row'>&nbsp;</td>
+</tr> 
+</table>
+</form>
+</body>
+</html>

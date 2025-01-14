@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Newsletter Details</title>
+</head>
+
+<script language="javascript">
+function fndelete() {
+document.location.href="index.php?page=page_delete&singleid=<?php echo $id?>";
+}
+function check_validation()
+{
+	var title = document.getElementById("title");
+	var inst = FCKeditorAPI.GetInstance("ajaxfilemanager");
+	var ajaxfilemanager = inst.GetHTML();
+	
+	if(title.value=="")
+	{
+		alert("Please enter the title");
+		title.focus();
+		return false;
+	}
+	
+	
+	if(ajaxfilemanager=="")
+	{
+		alert("Description should not be blank..");
+		return false;
+	}
+	
+}//function check_validation()
+</script>
+
+<body>
+<form name="form1" method="post" action="" OnSubmit="return validateStandard(this)">
+<input type="hidden" name="id" value="<?php echo $_GET[id] ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3">
+<tr>
+	<th colspan="2" align="left" class="table_title">Newsletter Details</th>
+</tr>  
+ <? if($_GET['msg']!='') { ?>
+	  <tr class='table_row'>
+		<td class="admin_success_msg" height=22 colspan="4" align="left"><strong><?php echo $_GET[msg]?></strong></td>		
+	  </tr>
+	  <? } ?>
+	  <? if($_GET['msg_error']!='') { ?>
+	  <tr class='table_row'>
+		<td class="admin_error_msg" height=22 colspan="4" align="left"><strong><?php echo $_GET[msg_error]?></strong></td>		
+	  </tr>
+	  <? } ?>
+<tr class='table_row'>
+ <td ><b>Title : </b></td>
+	  <td ><input type="text" name="title" id="title" size="50" value="<?php echo $title; ?>"></td>
+</tr>
+ 
+<tr class='table_row'>
+	<td  colspan="3" class='table_row'>
+	<?php
+		$contents = $description1;
+		$oFCKeditor = new FCKeditor('ajaxfilemanager') ;
+		$oFCKeditor->BasePath	=  "fckeditor/" ;
+		$oFCKeditor->Value		= $contents;
+		$oFCKeditor->Create() ;
+	?>
+	</td>
+</tr>
+ 
+<tr class='table_row'>
+<td>&nbsp;</td>
+	  <td align="left" >
+		<input class="input-button" type="Submit" c name="btnSave" value="Save Mail" onClick="return check_validation(); ">
+	  &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?page=send_mail"><b>Back</b></a></td>
+	</tr>	
+</table>
+</form>
+</body>
+</html>

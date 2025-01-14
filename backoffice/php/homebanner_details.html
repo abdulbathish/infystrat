@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Slideshow Details</title>
+</head>
+
+<script language="javascript">
+function check_val()
+{
+	var title = document.getElementById("title");
+	var picture = document.getElementById("picture");	
+	
+	if(title.value=="")
+	{
+		alert("Please enter the title");
+		title.focus();
+		return false;
+	}
+	
+	<?php if($_GET['id']==""){?>
+	if(picture.value=="")
+	{
+		alert("Please upload the banner the image");
+		picture.focus();
+		return false;
+	}else{
+		var fileName=picture.value;
+		var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+		
+		if(ext!="jpg" && ext!="JPG" && ext!="png" && ext!="PNG" && ext!="gif" && ext!="GIF")
+		{
+			alert("Format of the uploaded file is not correct..");
+			picture.focus();
+			return false;
+		}
+	}
+	<?php } else { ?>
+		if(picture.value!="")
+		{
+			var fileName=picture.value;
+			var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+			
+			if(ext!="jpg" && ext!="JPG" && ext!="png" && ext!="PNG" && ext!="gif" && ext!="GIF")
+			{
+				alert("Format of the uploaded file is not correct..");
+				picture.focus();
+				return false;
+			}
+		}
+	<?php }?>
+}
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	var token = document.getElementById('token').value;
+	if(ans)
+	{
+		document.location.href="index.php?page=homebanner_delete&singleid=<?php echo $id?>&token="+token;
+	}
+}
+  
+function showImage(impath)
+{ 
+	window.open(impath,"EventImage","width=400,height=200,resizable=1");
+}
+</script>
+<body> 
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="form1" method="post" action="index.php?page=homebanner_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET[id] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="table_class">
+	<tr class="table_title">
+		<td colspan="2" align="left">Slideshow Details</td>
+	</tr>	
+	 
+	<tr class='table_row'>
+	<td width="19%" align="left"><b> Title <span class="admin_error_msg">*</span>: </b></td>
+	  <td width="81%" align="left"><input type="text" name="title" id="title" size="40"  value="<?php echo $title; ?>" maxlength="60"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%" align="left"><b>Upload Banner <span class="admin_error_msg">*</span>: </b><br><br>
+	</td>
+	  <td width="81%" align="left"><input type="file" name="picture" id="picture" size="30" />
+		&nbsp;&nbsp;<strong>(1600 x 500)</strong>
+		&nbsp;&nbsp;<?php echo $img_name;?>
+		</td>
+	</tr>
+
+		<tr class='table_row'>
+		<td width="19%" align="left"><b>Image ALT Text :<span class="admin_error_msg"></span> </b><br><br> </td>
+		<td> <input type="text" name="image_alt" id="image_alt"  size="70" maxlength="100" value="<?php echo $imagealt;?>">  </td>
+		</tr>
+
+	<tr class='table_row'>
+	<td width="19%" align="left" valign="top">&nbsp;<b>Description : </b></td>
+	  <td width="81%" align="left">&nbsp;</td>
+	</tr>	
+	 <tr class='table_row'>
+    <td  colspan="2">
+	<?php
+		$contents = utf8_decode($description);
+		$oFCKeditor = new FCKeditor('description') ;
+		$oFCKeditor->BasePath	=  "fckeditor/" ;
+		$oFCKeditor->Value		= $contents;
+		$oFCKeditor->Create() ;
+	?>
+	</td>
+</tr>
+  
+	<tr class='table_row'>
+	  <td>&nbsp;</td> 	
+	  <td align="left">	  
+	  <?php if ($id != '') {?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Update Slideshow" onClick="return check_val();">
+	  <input class="input-button" type="button" name="btndelete" value="Delete Slideshow" onClick="fndelete();">
+	  <?php } else { ?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Add Slideshow" onClick="return check_val();">
+	  <?php } ?>
+	  <a href="index.php?page=homebanner_list"><b>&laquo; Back</b></a></td>
+	</tr>	
+</table>
+ <!-- <hr color="#FF6633">-->
+</form>
+</body>
+</html>

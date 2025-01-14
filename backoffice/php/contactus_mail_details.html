@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Mail Details</title>
+</head>
+
+<script language="javascript">
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	var token = document.getElementById('token').value;
+	if(ans)
+	{
+		document.location.href="index.php?page=contactus_mail_delete&singleid=<?php echo $id?>&token="+token;
+	}
+}
+function check_validation()
+{
+	var mail_subject = document.getElementById('mail_subject').value;
+	var mail_from = document.getElementById('mail_from').value;
+	var mail_footer = document.getElementById('mail_footer').value;
+	
+	if(mail_subject=="")
+	{
+		alert("Mail subject should not be Blank");
+		document.getElementById('mail_subject').focus();
+		return false;
+	}
+	
+	if(mail_from=="")
+	{
+		alert("Mail from should not be Blank");
+		document.getElementById('mail_from').focus();
+		return false;
+	}else{
+		
+		
+		var stremail = (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/).test(mail_from);
+		if(stremail == false)
+		{			
+			alert("Please enter valid email Id.");
+			document.getElementById('mail_from').focus();
+			return false;
+		}
+	}
+	
+	
+	var inst = FCKeditorAPI.GetInstance("mail_content");
+	var mail_content = inst.GetHTML();
+	
+	if(mail_content=="")
+	{
+		alert("Mail content should not be blank..");
+		document.getElementById("mail_content").focus();
+		return false;
+	}
+	if(mail_footer=="")
+	{
+		alert("Mail Footer text should not be Blank");
+		document.getElementById('mail_footer').focus();
+		return false;
+	}
+	
+	
+}
+
+function showImage(imgpath)
+{ 
+  window.open(imgpath,'Mywindow','width=350,height=300,resizable=1,screenX=200,screenY=100'); 
+} 
+</script>
+
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="form1" method="post" action="index.php?page=contactus_mail_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET[id] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3">
+	<tr>
+		<th colspan="2" align="left" class="table_title">Contact Us Mail  Details </th>
+	</tr>	
+	<tr class='table_row'>
+	<td width="19%"><b>Mail Subject : </b></td>
+	  <td width="81%"><input type="text" name="mail_subject" id="mail_subject" size="100" maxlength="100" value="<?php echo $mail_subject; ?>"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%"><b>Mail From (Email ID) : </b></td>
+	  <td width="81%"><input type="text" name="mail_from" id="mail_from" size="50" maxlength="50" value="<?php echo $mail_from; ?>"></td>
+	</tr>
+	<tr class='table_row'>
+	<td colspan="2"><b>Mail Content : </b></td>
+    </tr>
+	<tr class='table_row'>
+	<td colspan="2">
+		<?php
+			$contents = $mail_content;
+			$oFCKeditor = new FCKeditor('mail_content') ;
+			$oFCKeditor->BasePath	=  "fckeditor/" ;
+			$oFCKeditor->Value		= $contents;
+			$oFCKeditor->Create() ;
+		?>	  
+	</td>
+	</tr>
+	<tr class='table_row'>
+	<td width="19%"><b>Mail Footer Text: </b></td>
+	  <td width="81%"><input type="text" name="mail_footer" id="mail_footer" size="80" maxlength="150" value="<?php echo $mail_footer; ?>"></td>
+	</tr>
+	<tr class='table_row'>
+	<td width="19%"><b>Active : </b></td>
+	  <td width="81%"><input type="checkbox" name="active" id="active" value="1" <?php if($active==1){ echo "checked";} ?> ></td>
+	</tr>
+	<tr class='table_row'>
+	  <td>&nbsp;</td> 	
+	  <td align="left">	  
+	  <?php if ($id != '') {?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Update Mail" onClick="return check_validation();">
+	  <!--<input class="input-button" type="button" name="btndelete" value="Delete Mail" onClick="fndelete();">-->
+	  <?php } else { ?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Add Mail" onClick="return check_validation();">
+	  <?php } ?>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?page=contactus_mail_list"><b>&laquo; Back</b></a></td>
+	</tr>	
+</table>
+ <!-- <hr color="#FF6633">-->
+</form>
+</body>
+</html>

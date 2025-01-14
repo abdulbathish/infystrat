@@ -1,0 +1,122 @@
+<html>
+<head>
+<title>Application List</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+
+<script language="javascript">
+function fnSelect(obj)
+{
+	var comfList = document.forms[obj].elements["checkList[]"];		
+	var chkvalue;
+	if (comfList.length) {        
+		var selected = false;   
+		for (var i = 0; i < comfList.length; i++) {
+			if(comfList[i].checked == true)
+			 {
+				selected = true; 
+				chkvalue=comfList[i].value + "," + chkvalue;
+			 }
+		}
+			if (! selected) {             
+				alert('Please Select the job application.');              
+				return false;         
+			}
+	}
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=career_job_apply_delete&id="+chkvalue+"&job_id=<?php echo $jobid;?>";			
+	}
+}	
+
+function fnSerach()
+{
+	document.frm1.submit();
+}
+
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+
+<script>
+  function show_mail(cid)
+  {
+    window.open ("resume_reply.php?cid="+cid,"mywindow","location=1,status=1,width=500,height=350"); 		
+  }
+function export_csv()
+{	
+	window.location.href="export_job_application_report.php";	
+}
+</script>
+
+</head>
+<body>
+<form method="post" id="frm1" name="frm1" action="index.php?page=career_job_apply_list">
+<input type="hidden" name="jobid" id="jobid" value="<?php echo $jobid;?>">
+
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<?php if($_GET['msg']!='') { ?>
+	  <tr>
+		<th class="admin_success_msg" height=22 colspan="7" align="center"><?php echo $_GET['msg']?></th>		
+	  </tr>
+	  <?php } ?>
+	  <?php if($_GET['msg_error']!='') { ?>
+	  <tr>
+		<th class="admin_error_msg" height=22 colspan="7" align="center"><?php echo $_GET['msg_error']?></th>		
+	  </tr>
+	  <?php } ?>
+	 <tr class="3">
+	 	<td id="title_head" colspan="3">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td id="title_head">Application List</td>
+			<td align="right" style="padding-right:10px;">
+			<?php if($_GET['job_id']!=""){?>
+			<a href="index.php?page=job_list"><strong>&laquo; Back</strong></a>
+			<?php } else {?>
+			<a href="index.php?page=career_master_list"><strong>&laquo; Back</strong></a>
+			<?php }?>
+			</td>
+		</tr>
+		</table>
+
+		</td>
+	</tr>
+	  <tr>
+		<th align="Center" height="22">
+		<div id="search">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td><strong>Search :</strong></td>
+			<td><input type="text" name="search" value="<?php echo $name?>"></td> 
+			<td><img  name="btnserach" class="input" src="images/button_search.jpg" onClick="javascript: fnSerach();"/></td>
+			</tr>
+			</table>
+		</div>
+		</th>
+		<th width="20%" align="right"><a href="javascript:void(0);" onClick="export_csv();" class="addepages-link"><strong>Export Applications</strong></a></th>
+		<th align="right">  
+			<input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frm1');"> 
+		</th>
+	 <tr>
+	</table>
+	
+	<table width="100%" border="0" cellpadding="0" cellspacing="2"> 
+	  <tr class="table_title">
+		<td width="5%" height="22" align="center">Sr.No.</td>
+		<td width="15%" height="22" align="left">Apply for</td>
+		<td width="15%" height="22" align="left">Applier Name </td>
+		<td width="15%" height="22" align="left">Applier Email </td>
+        <td width="5%" height="22" align="left">Reply</td>
+		<td width="7%" height="22" align="center">
+		<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" onClick="javascript:check_all('frm1', this);">
+		</td>
+	  </tr>
+	  <?php echo $text; ?>
+	 <tr class="table_title">
+	    <td height=22 colspan="8" align="right"><?php echo $pageList; ?></td>
+      </tr>
+	</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>Google Map Setting</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1"> 
+<script language="javascript">
+function check_validation()
+{
+	var gmp_description = document.getElementById("gmp_description");
+	if(gmp_description.value=="")
+	{
+		alert("Google map description should not be blank..");
+		gmp_description.focus();
+		return false;
+	}//if(gmp_description.value=="")
+}//function check_validation()
+</script>
+</head>
+<body>
+ 
+<form name="frm_google" action="" method="post">
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="table_class">
+<?php  if($_GET['msg']!='') { ?>
+<tr>
+<td class="admin_success_msg" height="22" colspan="2"  align="center"><?php echo $_GET['msg']?></td>		
+</tr>
+<?php  } ?>
+<?php  if($_GET['msg_error']!='') { ?>
+<tr>
+<td class="admin_error_msg" height="22" colspan="2"  align="center"><?php echo $_GET['msg_error']?></td>		
+</tr>
+<?php  } ?>
+
+<tr class="table_title">
+	<td colspan="2" align="left">Google Map Setting</td>
+</tr>   
+
+<tr class='table_row'>
+<td width="21%" align="left" valign="top"><strong>Google Map Details<span class="error_msg">*</span> : </strong></td>
+<td width="79%" align="left"><textarea name="gmp_description" id="gmp_description" rows="10" cols="70"><?php echo $gmap_details;?></textarea></td>
+</tr> 
+ 
+<tr class='table_row'>
+<td align="left">&nbsp;</td>
+<td align="left"><input type="submit" name="btn_submit" id="btn_submit" value="Submit" class="input-button" onClick="return check_validation();"> </td>
+</tr> 
+  
+<tr class='table_title'>
+<td colspan="2">&nbsp;</td>
+</tr> 
+
+</table>
+</form>
+
+</body>
+</html>

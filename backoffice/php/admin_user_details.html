@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Admin User Details</title>
+</head>
+
+<script language="javascript">
+function check_javascript()
+{
+	var email = document.getElementById("email").value;
+	var emailpat = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i ;
+	
+	if(document.getElementById("pname").value=="")
+	{
+		alert("Please enter user full name");
+		document.getElementById("pname").focus();
+		return false;
+	}
+	  
+	if(email=="")
+	{
+		alert("Please enter email");
+		document.getElementById("email").focus();
+		return false;
+	}
+	else if(emailpat.test(email)==false )
+	{
+		alert("Please valid email id");
+		document.getElementById("email").focus();
+		return false;
+	}
+		//
+	if(document.getElementById("uname").value=="")
+	{
+		alert("Please enter loginid");
+		document.getElementById("uname").focus();
+		return false;
+	}
+	if(document.getElementById("pwd").value=="")
+	{
+		alert("Please enter Password");
+		document.getElementById("pwd").focus();
+		return false;
+	}	
+	if(document.getElementById("user_type").value=="")
+	{
+		alert("Please select user type");
+		document.getElementById("user_type").focus();
+		return false;
+	}	
+	
+}//function form_validation()
+
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	var token = document.getElementById('token').value;
+	if(ans)
+	{
+		document.location.href="index.php?page=admin_user_delete&singleid=<?=$id?>&token="+token;
+	}
+}
+</script>
+
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="form1" method="post" action="index.php?page=admin_user_update">
+<input type="hidden" name="id" value="<?php echo $_GET[id] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3">
+	<tr>
+		<th colspan="2" align="left" class="table_title">Admin User Details</th>
+	</tr>
+	<?php if($_GET[msg_error]!='') { ?>
+	  <tr class='table_row'>
+		<th class="admin_error_msg" height=22 colspan="6" align="center"><?=$_GET[msg_error]?></th>		
+	  </tr>
+	<?php } ?>
+	<tr class='table_row'>
+	<td width="19%"><b>Full Name<span class="admin_error_msg">*</span> : </b></td>
+	  <td width="81%"><input type="text" name="pname" id="pname" size="30" required="1"  err="Please enter employee name" value="<?php echo $full_name; ?>"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%"><b>Email<span class="admin_error_msg">*</span> :</b></td>
+	  <td width="81%"><input type="text" name="email" id="email" size="30" required="1"  err="Please enter email" value="<?php echo $email; ?>"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%"><b>LoginId<span class="admin_error_msg">*</span> : </b></td>
+	  <td width="81%"><input type="text" name="uname" id="uname" size="30" required="1"  err="Please enter Login id" value="<?php echo $uname; ?>"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%"><b>User Password<span class="admin_error_msg">*</span> : </b></td>
+	  <td width="81%"><input type="password" name="pwd" id="pwd" size="30" required="1"  err="Please enter user Password" value="<?php echo $pwd; ?>"></td>
+	</tr>
+	
+	<tr class='table_row'>
+	<td width="19%"><b>User Type<span class="admin_error_msg">*</span> : </b></td>
+	  <td width="81%">
+	  <?php
+	  	//----- select user type -------
+		$sel_user = "select * from admin_user_type where status='1' order by menu_order asc";
+		$res_user = q($sel_user,$dbconnect);
+		$cnt_user = nr($res_user);
+		
+	  ?>
+	  <select name="type1" id="type1" >
+		  <option value="">Please Select</option>
+		  <?php if($cnt_user>0){?>
+		  <?php while($row_user = f($res_user)){?>
+		  <option value="<?php echo $row_user['id']; ?>" <?php if($type1==$row_user['id']){ echo "selected"; }?>><?php echo $row_user['user_name']; ?></option>
+		  <?php }?>
+		  <?php }else{?>
+		  <option value="">No Type Found</option>
+		  <?php }?>
+	  </select>
+	  </td>
+	</tr>
+
+	<tr class='table_row'>
+	<td width="19%"><b>User Status<span class="admin_error_msg">*</span> : </b></td>
+	  <td width="81%">
+	  <select name="status" id="status">
+	  <option value="">Please Select</option>
+	  <option value="1" <?php if($status==1){ echo "selected";}?>>Active</option>
+	  <option value="0"<?php if($status==0){ echo "selected";}?>>Deactive</option>
+	  </select>
+	  </td>
+	</tr>
+	
+	<tr class='table_row'>
+	  <td>&nbsp;</td> 	
+	  <td align="left">	  
+	  <? if ($id != '') {?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Update Admin User" onClick="javascript: return check_javascript();">
+	  <input class="input-button" type="button" name="btndelete" value="Delete Admin User" onClick="fndelete();">
+	  <? } else { ?>
+	  <input class="input-button" type="Submit" name="btnSave" value="Add Admin User" onClick="javascript: return check_javascript();">
+	  <? } ?>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?page=admin_user_list"><b>Back</b></a></td>
+	</tr>	
+</table>
+ <!-- <hr color="#FF6633">-->
+</form>
+</body>
+</html>

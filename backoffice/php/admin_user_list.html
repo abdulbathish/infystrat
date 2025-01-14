@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>Admin User List</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+
+<script language="javascript">
+function fnSelect(obj)
+{ 
+		var comfList = document.forms[obj].elements["checkList[]"];	
+		var token = document.getElementById('token').value;
+		var chkvalue;
+		if (comfList.length) {        
+			var selected = false;   
+			for (var i = 0; i < comfList.length; i++) {
+				if(comfList[i].checked == true)
+				 {
+					selected = true; 
+					chkvalue=comfList[i].value + "," + chkvalue;
+				 }
+			}
+				if (! selected) {             
+					alert('Please Select the user.');              
+					return false;         
+			    }
+		}
+		var ans=confirm("Are you sure you want to delete?");
+		if(ans)
+		{
+			document.location.href="index.php?page=admin_user_delete&id="+chkvalue+"&token="+token;		
+		}
+}
+
+function fnSerach()
+{
+	document.frm1.submit();
+}
+function fnStatus(userid,status)
+{
+	document.getElementById('userid1').value=userid;
+	document.getElementById('status1').value=status;
+	document.frm1.submit();
+}
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form method="post" id="frm1" name="frm1" action="index.php?page=admin_user_list">
+<input type="hidden" name="userid1" id="userid1" value="">
+<input type="hidden" name="status1" id="status1" value="">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	 
+    <tr class="3">
+	 	<td id="title_head" colspan="3">Admin User List</td>
+		<td id="title_head" align="right"><a href="index.php?page=admin_master"><strong>&laquo; Back</strong></a></td>
+	</tr>
+	  <tr>
+		<th align="Center" height="22">
+		<div id="search">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td><strong>Search :</strong></td>
+			<td><input type="text" name="search" value="<?=$name?>"></td> 
+			<td><img  name="btnserach" class="input" src="images/button_search.jpg" style="cursor:hand;" onClick="javascript: fnSerach();"/></td>
+			</tr>
+			</table>
+		</div>
+		</th>
+	<th align="right"><a href="index.php?page=admin_user_details" class="addepages-link">Add User</a></th>
+	<th align="right" colspan="2"> 
+	<input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frm1');"> 
+	</th>
+	 <tr>
+	</table>
+	
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select sortable"> 
+	  <?php if($_GET[msg]!='') { ?>
+	  <tr>
+		<th class="admin_success_msg" height=22 colspan="6" align="center"><?=$_GET[msg]?></th>		
+	  </tr>
+	  <?php } ?>
+	  <?php if($_GET[msg_error]!='') { ?>
+	  <tr>
+		<th class="admin_error_msg" height=22 colspan="6" align="center"><?=$_GET[msg_error]?></th>		
+	  </tr>
+	  <?php } ?>
+	  <tr class="table_title">
+		<td align="center" height=22 width="79" style="border-right:1px solid #fff;">Sr.No.</td>
+		<td width="247" height=22 align="left" style="border-right:1px solid #fff;">&nbsp;User Type </td>
+		<td width="294" height=22 align="left" style="border-right:1px solid #fff;">&nbsp;Full Name </td>
+		<td width="474" height=22 align="left" style="border-right:1px solid #fff;">&nbsp;User Name </td>
+		<td width="109" height=22 align="center" style="border-right:1px solid #fff;">Status</td>
+		<td width="109" height=22 align="center">&nbsp;
+		<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" onClick="javascript:check_all('frm1', this);">
+		&nbsp; 
+		</td>
+	  </tr>
+	 <?php echo $text; ?>
+	 <tr class="table_title">
+	    <th height=22 colspan="6" align="right"><?php echo $pageList; ?></th>
+      </tr>
+	</table>
+</form>
+</body>
+</html>

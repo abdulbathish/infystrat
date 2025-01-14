@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>User Type</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<script language="javascript">
+function chk_frm_val()
+{
+	var file_name = document.getElementById("file_name");
+	var para1 = document.getElementById("parameter1");
+	var para2 = document.getElementById("parameter2");
+	var para3 = document.getElementById("parameter3");
+	var para4 = document.getElementById("parameter4");
+	
+	if(file_name.value=="")
+	{
+		alert("File Name should not be blank !");
+		file_name.focus();
+		return false;
+	}
+	if(para1.value=="" && para2.value=="" && para3.value=="" && para4.value=="")
+	{
+		alert("Enter atleast one parameter !");
+		para1.focus();
+		return false;
+	}
+}//function chk_frm_val()
+function fnSelect(obj)
+{	
+	var comfList = document.forms[obj].elements["checkList[]"];		
+	var chkvalue;
+	if (comfList.length>0) {        
+		var selected = false;   
+		for (var i = 0; i < comfList.length; i++) {
+			if(comfList[i].checked == true)
+			 {
+				selected = true; 
+				chkvalue=comfList[i].value + "," + chkvalue;
+			 }
+		}
+		if (!selected) {             
+			alert('Please select atleast one record.');              
+			return false;         
+		}
+	}
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=other_file_delete&id="+chkvalue;		
+	}
+} //function fnSelect(obj)
+function fnSerach()
+{	
+	document.frmdownload_category.submit();
+}	
+function add_new()
+{	
+	document.location.href="index.php?page=other_file_list";
+	//alert(document.getElementById("typename"));
+	var photocatname = document.getElementById("txttypename");
+	photocatname.value='';
+	photocatname.focus();
+	return false;
+}//function add_new()
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<form method="post" id="frmdownload_category" name="frmdownload_category" action="index.php?page=other_file_list" onSubmit="javascript: return chk_frm_val()">
+<input type="hidden" name="id" id="id" value="<?php echo $_GET[id]?>">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<?php if($_GET['msg']!='') { ?>
+		<tr>
+			<th class="admin_success_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg]?></th>		
+		</tr>
+		<?php } ?>
+		<?php if($_GET['msg_error']!='') { ?>
+		<tr>
+			<th class="admin_error_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg_error]?></th>		
+		</tr>
+		<?php } ?>
+		<tr>
+			<td colspan="3">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					<td width="82%" align="left" id="title_head">Other-File Management</td>
+					<td width="18%" align="right" id="title_head"><a href="index.php?page=seo_page_rules"><strong>&nbsp;&laquo;&nbsp; Back</strong></a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php 
+			$sql_page1="select id, page_title from general_pages order by id ASC";
+			$qry_page1=q($sql_page1,$dbconnect);
+		?>
+		<tr>
+			<th align="center" height="22" colspan="3">
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" align="left">
+					<tr class='table_row'>	
+						<td width="8%"  align="left" valign="top"><b>Page</b></td>
+						<td width="10%"  align="left" valign="top"><b>Prefix</b></td>
+						<td width="10%"  align="left" valign="top"><b>Php File Name</b></td>
+						<td width="10%"  align="left" valign="top"><b>Parameter1 </b></td>
+						<td width="10%"  align="left" valign="top"><b>Parameter2 </b></td>
+						<td width="10%"  align="left" valign="top"><b>Parameter3 </b></td>
+						<td width="10%"  align="left" valign="top"><b>Parameter4 </b></td>
+						<td width="10%"  align="left" valign="top">&nbsp;</td>
+					</tr>
+					<tr class='table_row'>	
+						<td width="8%"  align="left" valign="top">
+						<select name="page_id" id="page_id" style="height:20px;">
+						<option value="">Select Page</option>
+						<?php while($page1=f($qry_page1)){?>
+							<option value="<?php echo $page1['id']; ?>" <?php if($page_id==$page1[id]){?>selected="selected"<?php }?>><?php echo $page1['page_title'];?></option>
+						<?php }?>
+						</select>
+						</td>
+						<td width="10%"  align="left" valign="top">
+							<input type="text" name="prefix" id="prefix" size="10" maxlength="50" value="<?php echo $prefix;?>" style="height:20px;" /><br />
+							Space is not allow in prefix
+						</td>
+						<td width="10%"  align="left" valign="top">
+							<input type="text" name="file_name" id="file_name" size="20" maxlength="50" value="<?php echo $page_file_name;?>" style="height:20px;" /><br />
+							Space is not allow file name(contact-us.php)
+						</td>
+						<td width="10%"  align="left" valign="top">
+							?<input type="text" name="parameter1" id="parameter1" size="10" maxlength="50" value="<?php echo $parameter1;?>" style="height:20px;" />
+						</td>
+						<td width="10%"  align="left" valign="top">
+							& <input type="text" name="parameter2" id="parameter2" size="10" maxlength="50" value="<?php echo $parameter2;?>" style="height:20px;" />
+						</td>
+						
+						<td width="10%"  align="left" valign="top">
+							& <input type="text" name="parameter3" id="parameter3" size="10" maxlength="50" value="<?php echo $parameter3;?>" style="height:20px;" />
+						</td>
+						<td width="10%"  align="left" valign="top">
+							& <input type="text" name="parameter4" id="parameter4" size="10" maxlength="50" value="<?php echo $parameter4;?>" style="height:20px;" />
+						</td>
+						
+						<td width="10%"  align="left" valign="top">
+							<input type="submit" name="btn_submit" id="btn_submit" value="<?php echo $button_name;?>" class="input-button"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="8" align="right"><input type="button" name="btn_addnew" class="input-button" value="Add New" onClick="return add_new();">
+						<input type="button" class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frmdownload_category');"></td>
+					</tr>
+								
+				</table>
+			</th>
+		<tr>	
+	</table>	
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select table_class"> 
+		<tr class="table_title">
+			<td width="5%"  height=22 align="center" style="border-right:1px solid #fff;">Sr.No.</td>
+			<td width="30%" height=22 align="left" style="border-right:1px solid #fff;">&nbsp;&nbsp;Prefix</td>
+			<td width="30%" height=22 align="left" style="border-right:1px solid #fff;">File Name</td>
+			<td width="20%" height=22 align="left" style="border-right:1px solid #fff;">Parameter1</td>
+			<td width="20%" height=22 align="left" style="border-right:1px solid #fff;">Parameter2</td>
+			<td width="20%" height=22 align="left" style="border-right:1px solid #fff;">Parameter3</td>
+			<td width="20%" height=22 align="left" style="border-right:1px solid #fff;">Parameter4</td>
+			<td width="20%" height=22 align="left">Delete</td>
+		</tr>
+	<?php echo $text; ?>
+		<tr>
+			<td align="center" valign="top" colspan="2">&nbsp;</td>
+			<!--<td align="center" valign="top">
+			<input type="submit" class="input-button" name="updateOrder" value="Update" onClick="UpdateOrder();" />
+			</td>-->		
+			<td align="center" valign="top" colspan="3">&nbsp;</td>
+		</tr>
+	    
+    <tr class="table_title">
+	    <td height=22 colspan="9" align="right"><?php echo $pageList; ?></td>
+      </tr>
+      
+	</table>
+	</th>
+	</tr>
+	</table>
+</form>
+</body>
+</html>

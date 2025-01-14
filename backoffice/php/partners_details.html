@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Partners Details</title>
+</head>
+<script language="javascript">
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=partners_delete&singleid=<?php echo $id?>";
+	}
+}
+function check_formval()
+{
+	var partnersegory = document.getElementById("partnersegory");	
+	if(partnersegory.value=="")
+	{
+		alert("partners name should not be blank.");
+		partnersegory.focus();
+		return false;
+	}			
+}//function check_formval() 
+function showImage(impath)
+{ 
+	window.open(impath,"partnersegoryImage","width=400,height=400,resizable=1");
+}
+</script>
+<body>
+<form name="form1" method="post" action="index.php?page=partners_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="table_class">
+<tr class="table_title">
+	<td colspan="2" align="left">Partners Details</td>
+</tr>	
+	  
+<tr class='table_row'>
+	<td width="20%" align="left">&nbsp;<b>Partners Name <?php echo $lang1;?><span class="admin_error_msg">*</span> : </b></td>
+	<td width="80%" align="left">
+		<input type="text" name="partnersname" id="partnersname" size="60" value="<?php echo $partners_name; ?>" maxlength="200">
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" align="left">&nbsp;<b>Link : </b></td>
+	<td width="81%" align="left">
+	<input type="text" name="url_title" id="url_title"  size="60" maxlength="100" value="<?php echo $url_title;?>">
+	<br /><strong>(e.g. http://www.c-duck.com)</strong>
+	</td>
+</tr>
+
+<tr class='table_row'>
+<td width="19%" align="left">&nbsp;<b>Image : </b></td>
+  <td width="81%" align="left"><input type="file" name="picture" id="picture" size="30" />&nbsp;&nbsp;<strong>(220 x 144)</strong>&nbsp;&nbsp;<?php echo $img_name;?></td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" align="left">&nbsp;<b>Image ALT : </b></td>
+	<td width="81%" align="left"><input type="text" name="image_alt" id="image_alt" size="60" value="<?php echo $image_alt; ?>" maxlength="100"></td>
+</tr>
+
+<!--<tr class='table_row'>
+	<td align="right"><input type="checkbox" name="txthomeset" id="txthomeset" value="1" <?php echo $homeset;?>></td>
+	<td valign="top"><b>Set as Home</b> </td>
+</tr>-->
+
+<tr class='table_row'>
+	<td>&nbsp;</td>
+	<td align="left">
+		<?php  if ($id != '') {?>
+		<input class="input-button" type="Submit" name="btnSave" value="Update Partners" onClick="return check_formval();">
+		<input class="input-button" type="button" name="btndelete" value="Delete Partners" onClick="fndelete();">
+		<?php  } else { ?>
+		<input class="input-button" type="Submit" name="btnSave" value="Add Partners" onClick="return check_formval();">
+		<?php  } ?>
+		<a href="index.php?page=partners_list"><b>&laquo; Back</b></a>
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

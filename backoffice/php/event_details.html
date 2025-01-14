@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>News and Event Details</title>
+</head>
+<script language="javascript">
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=event_delete&singleid=<?php echo $id?>";
+	}
+}
+function check_formval()
+{
+	var subject = document.getElementById("txtsubject");	
+	if(subject.value=="")
+	{
+		alert("Name should not be blank.");
+		subject.focus();
+		return false;
+	}			
+}//function check_formval() 
+function showImage(impath)
+{ 
+	window.open(impath,"eventegoryImage","width=400,height=400,resizable=1");
+}
+</script>
+<body>
+<form name="form1" method="post" action="index.php?page=event_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="table_class">
+<tr class="table_title">
+	<td colspan="2" align="left">News & Event Details</td>
+</tr>	
+	  
+<tr class='table_row'>
+	<td width="19%" align="left"><b>Name<span class="admin_error_msg">*</span> : </b></td>
+	<td width="81%" align="left">
+		<input type="text" name="txtsubject" id="txtsubject" size="80" value="<?php echo $subject; ?>" maxlength="250">
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" align="left"><b>Intro Text : </b></td>
+	<td width="81%" align="left">
+		<textarea type="text" name="txtintro_text" id="txtintro_text" rows="5" cols="50"><?php echo $intro_text;?></textarea>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td align="left" valign="top" width="20%"><b>Date &nbsp; </b></td>
+	<td align="left" valign="top" width="80%">
+		<table border="0" cellspacing="1" cellpadding="1">
+		<tr>
+		<th><input type="text" name="txteventdate" id="txteventdate" size="10" maxlength="10" value="<?php echo $eventdate; ?>" class="page_text" readonly="readonly" /></th>
+		<th><img src="images/calender.jpg" border="0" id="f_btn" style="cursor:pointer;">
+		<script type="text/javascript">//<![CDATA[
+			var cal = Calendar.setup({
+			onSelect: function(cal) { cal.hide() }
+			});
+			
+			cal.manageFields("f_btn", "txteventdate", "%d-%m-%Y");
+			cal.manageFields("txteventdate", "txteventdate", "%d-%m-%Y");
+			//]]></script>
+			</th>
+		</tr>
+		</table>
+</td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" align="left">&nbsp;<b>Image : </b></td>
+	<td width="81%" align="left">
+		<input type="file" name="picture" id="picture" />&nbsp;&nbsp;<strong>(200 x 250px)</strong>&nbsp;&nbsp;<?php echo $img_name;?>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td colspan="3"><b>Description : </b></td>
+</tr>
+<tr class='table_row'>
+    <td  colspan="3">
+	<?php
+		$contents = $description;
+		$oFCKeditor = new FCKeditor('description') ;
+		$oFCKeditor->BasePath	=  "fckeditor/" ;
+		$oFCKeditor->Value		= $contents;
+		$oFCKeditor->Create() ;
+	?>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>&nbsp;</td> 	
+	<td align="left">	  
+		<?php  if ($id != '') {?>
+		<input class="input-button" type="Submit" name="btnSave" value="Update" onClick="return check_formval();">
+		<input class="input-button" type="button" name="btndelete" value="Delete" onClick="fndelete();">
+		<?php  } else { ?>
+		<input class="input-button" type="Submit" name="btnSave" value="Add" onClick="return check_formval();">
+		<?php  } ?>
+		<a href="index.php?page=event_list"><b>&laquo; Back</b></a>
+	</td>
+</tr>	
+</table>
+</form>
+</body>
+</html>

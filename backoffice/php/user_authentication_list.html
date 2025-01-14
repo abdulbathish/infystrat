@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>User Type</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<script language="javascript">
+function chk_frm_val()
+{
+	var photocatname = document.getElementById("txttypename");
+	var paravalue = document.getElementById("paravalue");
+	if(photocatname.value=="")
+	{
+		alert("User authentication should not be blank !");
+		photocatname.focus();
+		return false;
+	}
+	if(paravalue.value=="")
+	{
+		alert("Parameter value should not be blank !");
+		paravalue.focus();
+		return false;
+	}
+}//function chk_frm_val()
+function fnSelect(obj)
+{	
+	var comfList = document.forms[obj].elements["checkList[]"];		
+	var chkvalue;
+	if (comfList.length>0) {        
+		var selected = false;   
+		for (var i = 0; i < comfList.length; i++) {
+			if(comfList[i].checked == true)
+			 {
+				selected = true; 
+				chkvalue=comfList[i].value + "," + chkvalue;
+			 }
+		}
+		if (!selected) {             
+			alert('Please select atleast one user authentication.');              
+			return false;         
+		}
+	}
+	var ans=confirm("Are you sure you want to delete?");
+	if(ans)
+	{
+		document.location.href="index.php?page=user_authentication_delete&id="+chkvalue;		
+	}
+} //function fnSelect(obj)
+function fnSerach()
+{	
+	document.frmdownload_category.submit();
+}	
+function add_new()
+{	
+	document.location.href="index.php?page=user_authentication_list";
+	//alert(document.getElementById("typename"));
+	var photocatname = document.getElementById("txttypename");
+	photocatname.value='';
+	photocatname.focus();
+	return false;
+}//function add_new()
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<form method="post" id="frmdownload_category" name="frmdownload_category" action="index.php?page=user_authentication_list">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<?php if($_GET['msg']!='') { ?>
+		<tr>
+			<th class="admin_success_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg]?></th>		
+		</tr>
+		<?php } ?>
+		<?php if($_GET['msg_error']!='') { ?>
+		<tr>
+			<th class="admin_error_msg" height=22 colspan="4" align="center"><?php echo $_GET[msg_error]?></th>		
+		</tr>
+		<?php } ?>
+		<tr>
+			<td colspan="3">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					<td width="82%" align="left" id="title_head">User Authentications List</td>
+					<td width="18%" align="right" id="title_head"><a href="index.php?page=admin_master"><strong>&laquo; Back</strong></a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<!--Search Functionality Start-->
+		<tr>
+			<td colspan="3">
+				<table width="50%" border="0" cellspacing="1" cellpadding="1" align="left">
+					<tr>
+					<td width="42%" align="left" id="search_lbl"><strong>Search :</strong></td>
+					<td width="35%" align="left"><input type="text" name="search"  value="<?php echo $name?>"></td>
+					<td width="23%" align="left"><img  name="btnserach" class="input" src="images/button_search.jpg" 
+						style="cursor:pointer;" onClick="javascript: fnSerach();"/></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td colspan="3"><hr></td></tr>
+		<!--Search Functionality End-->
+		<tr>
+			<th align="center" height="40" colspan="3">
+				<table width="100%" border="0" cellspacing="2" cellpadding="1" align="left">
+					<tr>	
+					<input type="hidden" name="id" id="id" value="<?php echo $_GET[id]?>">
+					<td width="75%"  align="left" valign="top" >
+						<strong>User Authentication:</strong>&nbsp;&nbsp;
+						<input type="text" name="txttypename" id="txttypename" size="30" maxlength="255" value="<?php echo $typename;?>" >&nbsp;&nbsp;
+						
+						<strong>Value:</strong>&nbsp;&nbsp;
+						<input type="text" name="paravalue" id="paravalue" size="20" maxlength="20" value="<?php echo $paravalue;?>" >&nbsp;&nbsp;
+						
+						<input type="submit" name="btn_submit" class="input-button" value="<?php echo $button_name; ?>&nbsp; " 
+						onClick="return chk_frm_val();">
+					</td>							
+					<?php if($id!="") {?>
+					<td width="25%" align="right" valign="top">&nbsp;&nbsp;
+						<input type="button" name="btn_addnew" class="input-button" value="Add New" 
+						onClick="return add_new();">&nbsp;&nbsp;
+						<input type="button"  class="input-button" name="btn1" value="Delete" 
+						onClick="javascript:fnSelect('frmdownload_category');">
+					</td>
+					<?php } else { ?>
+					<td width="14%" align="right" valign="top">
+						<input type="button"  class="input-button" name="btn1" value="Delete" 
+						onClick="javascript:fnSelect('frmdownload_category');">
+					</td>   
+					<?php } ?>				
+					</tr>				
+				</table>
+			</th>
+		<tr>	
+	</table>	
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select sortable table_class">
+		<tr class="table_title">
+			<td width="8%"  height=22 align="center" style="border-right:1px solid #fff;">Sr.No.</td>
+			<td width="30%" height=22 align="left" style="border-right:1px solid #fff;">User Authentication</td>
+			<td width="20%" height=22 align="left" style="border-right:1px solid #fff;">Value</td>
+			<td width="10%" height=22 align="center" style="border-right:1px solid #fff;">Position</td>
+			<td width="10%"  height=22 align="center" style="border-right:1px solid #fff;">Status</td>
+			<td width="10%"  height=22 align="center" style="border-right:1px solid #fff;">Edit</td>
+			<td width="8%"  height=22 align="center">
+				<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" 
+				onClick="javascript:check_all('frmdownload_category', this);">
+			</td>
+		</tr>
+	<?php echo $text; ?>
+		<tr>
+			<td align="center" valign="top" colspan="3">&nbsp;</td>
+			<td align="center" valign="top" >
+			<input type="submit" class="input-button" name="updateOrder" value="Update" onClick="UpdateOrder();" />
+			</td>				
+			<td align="center" valign="top" colspan="3">&nbsp;</td>
+		</tr>
+	    
+    <tr class="table_title">
+	    <td height=22 colspan="9" align="right"><?php echo $pageList; ?></td>
+      </tr>
+      
+	</table>
+	</th>
+	</tr>
+	</table>
+</form>
+</body>
+</html>

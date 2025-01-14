@@ -1,0 +1,146 @@
+<script language="javascript">
+function fnSelect(obj)
+{
+		var comfList = document.forms[obj].elements["checkList[]"];		
+		var chkvalue;
+		var token = document.getElementById('token').value;
+		if (comfList.length) {        
+			var selected = false;   
+			for (var i = 0; i < comfList.length; i++) {
+				if(comfList[i].checked == true)
+				 {
+					selected = true; 
+					chkvalue=comfList[i].value + "," + chkvalue;
+				 }
+			}
+				if (! selected) {             
+					alert('Please select the page.');              
+					return false;         
+			    }
+		}
+		var ans=confirm("Are you sure you want to delete?");
+		if(ans)
+		{
+		document.location.href="index.php?page=subpage_delete&id="+chkvalue+"&token="+token+"&pageid=<?php echo $_GET['pageid'];?>";
+		}
+}
+
+function fnSerach()
+{
+	document.frm_search.submit();
+}
+function funpage(val)
+{
+	var per_page = document.getElementById("per_page").value;
+	window.location.href="index.php?page=subpage_list&perpage="+per_page+"&pageid=<?php echo $_GET['pageid'];?>";
+}
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	  <?php  if($_GET[msg]!='') { ?>
+	  <tr>
+		<th class="admin_success_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg]?></th>
+	  </tr>
+	  <?php  } ?>
+	  <?php  if($_GET[msg_error]!='') { ?>
+	  <tr>
+		<th class="admin_error_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg_error]?></th>		
+	  </tr>
+	  <?php  } ?>
+	  <tr>
+		<td id="title_head"  colspan="3">
+			<table width="100%" border="0" cellspacing="1" cellpadding="1">
+				<tr>
+					<td id="title_head" width="80%"><?php echo $page_name?> &raquo; Sub page list</td>
+					<td id="title_head" width="20%" align="right"><a href="index.php?page=page_list">&laquo; Back</a></td>
+				</tr>
+			</table>
+		</td>
+	  </tr>
+	</table>
+</td></tr>
+
+<tr><td>
+	<form method="post" id="frm_search" name="frm_search" action="index.php?page=subpage_list&pageid=<?php echo $_GET['pageid'];?>">
+	<input type="hidden" name="pageid" id="pageid" value="<?php echo $_GET['pageid'];?>">
+	<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" height="35">
+			<tr>
+				<td width="40%" align="left">
+					<table border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td>&nbsp;<strong>Search :</strong></td>
+							<td style="padding-left:8px;"><input type="text" name="search" value="<?php echo $_POST['search']; ?>"></td>
+							<td><img  name="btnserach" class="input" src="images/button_search.jpg" style="cursor:pointer;" onClick="javascript: fnSerach();"/></td>
+						</tr>
+					</table>
+				</td>	
+				
+				<td width="30%" align="right">
+					<select name="per_page" onchange="funpage(this.value);" style="width:100px" id="per_page">
+						<option value="50" <?php if($perpage=="50") {?> selected="selected" <?php }?>>50 Per page</option>
+						<option value="100" <?php if($perpage=="100") {?> selected="selected" <?php }?>>100 Per page</option>
+						<option value="200" <?php if($perpage=="200") {?> selected="selected" <?php }?>>200 Per page</option>
+						<option value="300" <?php if($perpage=="300") {?> selected="selected" <?php }?>>300 Per page</option>
+						<option value="400" <?php if($perpage=="400") {?> selected="selected" <?php }?>>400 Per page</option>
+						<option value="500" <?php if($perpage=="500") {?> selected="selected" <?php }?>>500 Per page</option>
+						<option value="all" <?php if($perpage=="all") {?> selected="selected" <?php }?>>All</option>
+					</select>
+				</td>
+
+				<td width="10%" align="right"><a href="index.php?page=subpage_details&pageid=<?php echo $_GET['pageid'];?>" class="addepages-link">Add&nbsp;New</a></td>
+				<td width="10%" align="right"><input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frm_master');"></td>
+			</tr>
+		</table> 					
+	</form>
+</td></tr>
+
+<tr><td>
+	<form method="post" id="frm_master" name="frm_master" action="index.php?page=subpage_list&pageid=<?php echo $_GET['pageid'];?>">
+	<input type="hidden" name="page1" id="page1" value="<?php echo $_GET['page1']?>">
+	<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">	
+	<input type="hidden" name="pageid" id="pageid" value="<?php echo $_GET['pageid'];?>">
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select sortable" id="sorter"> 
+			<tr class="table_title">
+			<td align="center" height=22 width="96" style="border-right:1px solid #fff;" class="nosort">Sr.No.</td>
+			<td width="400" align="left" style="border-right:1px solid #fff;">Page Title</td>
+			<td width="200" align="center" style="border-right:1px solid #fff;" class="nosort">Page Order</td>
+			<td width="174" height=22 align="center" style="border-right:1px solid #fff;" class="nosort">Status</td>
+			<td align="center" width="137" style="border-right:1px solid #fff;" class="nosort">Edit</td>
+			<td width="108" align="center" style="border-right:1px solid #fff;" class="nosort">
+			<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" onClick="javascript:check_all('frm_master', this);"></td>
+			</tr>
+			<?php echo $text; ?>
+		</table>
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="2"> 
+			<tr>
+				<td width="5%">&nbsp;</td>
+				<td width="20%">&nbsp;</td>
+				<td width="10%">&nbsp;</td>
+				<td width="6%">&nbsp;</td>
+				<td align="center" valign="top" width="8%"><input type="submit" class="input-button" name="updateOrder" value="Update" onClick="UpdateOrder();" /></td>
+				<td  width="13%">&nbsp;</td>
+				<td  width="10%">&nbsp;</td>
+				<td  width="7%">&nbsp;</td>
+				<td width="5%">&nbsp;</td>				
+			</tr>				
+			<tr class="table_title">
+				<td height=22 colspan="10" align="right"><?php if($perpage!="all"){ echo $pageList; } ?></td>
+			</tr>      
+		</table>
+	</form>
+</td></tr>
+</table>
+
+<script type="text/javascript">
+var sorter=new table.sorter("sorter");
+sorter.init("sorter",1);
+</script>

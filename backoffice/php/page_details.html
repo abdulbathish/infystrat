@@ -1,0 +1,175 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Page Details</title>
+</head>
+
+<script language="javascript">
+
+function fndelete()
+{
+   var ans=confirm("Are you sure you want to delete?");
+   var token = document.getElementById('token').value;
+   if(ans)
+	{
+		document.location.href="index.php?page=page_delete&singleid=<?=$id?>&token="+token;
+	}
+}
+
+function check_formval()
+{
+	
+	var title = document.getElementById("page_title");
+		
+	if(title.value=="")
+	{
+		alert("Title should not be blank.");
+		title.focus();
+		return false;
+	}
+	
+	/*var inst = FCKeditorAPI.GetInstance("description");
+	var description = inst.GetHTML();
+	
+	if(description=="")
+	{
+		alert("Description should not be blank.");
+		return false;
+	}*/
+}//function check_formval()
+
+
+function showImage(impath)
+{ 
+	window.open(impath,"EventImage","width=400,height=400,resizable=1");
+}
+
+function AddImagetr(curid)
+{	
+	var curtrid = document.getElementById("curtrid").value;
+	var newtrid = (parseInt(curtrid)+1);
+	document.getElementById("img"+newtrid).style.display="";
+	document.getElementById("curtrid").value = newtrid;
+	if(newtrid == 10)	
+		document.getElementById("addtr").style.display="none";
+}
+</script>
+
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="form1" method="post" action="index.php?page=page_update" OnSubmit="return check_formval();" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+<input type="hidden" name="curtrid" id="curtrid" value="<?php echo $numimg;?>">
+<input type="hidden" name="curtrid1" id="curtrid1" value="<?php echo $recid1;?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="table_class">
+<tr>
+	<td colspan="2" align="left" class="table_title">Page Details</td>
+</tr> 
+
+<tr class='table_row'>
+	<td width="20%"><b>Page Title <span class="admin_error_msg">*</span>: </b></td>
+	<td width="80%" >
+	<input type="text" name="page_title" id="page_title" size="60" maxlength="60" required="1"  value="<?php echo $page_title; ?>"   >
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td><b>Alias : </b></td>
+	<td><input type="text" name="url_title" id="url_title"  size="60" maxlength="100" value="<?php echo $url_title;?>">
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td width="20%"><b>Page Subtitle<span class="admin_error_msg">*</span>: </b></td>
+	<td width="80%" >
+	<input type="text" name="page_subtitle" id="page_subtitle" size="60" maxlength="200" required="1"  value="<?php echo $page_subtitle; ?>"   >
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td valign="top">&nbsp;<b>Intro Text : </b></td>
+	 <td><textarea name="intro_text" id="intro_text" cols="47" rows="4"><?php echo utf8_decode($intro_text); ?></textarea></td>
+</tr>
+
+<!--<tr class='table_row'>
+	  <td><b>Page URL : </b></td>
+	  <td align="left"><input type="text" name="txturl" id="txturl" size="60" value="<?php echo $url;?>"></br>
+	  <strong>e.g. http://www.google.com</strong>
+	  </td>
+</tr>-->
+
+<tr class='table_row'>
+	<td><b>Browser Title : </b></td>
+	<td>
+	<input type="text" name="browser_title" id="browser_title" size="60" maxlength="100" value="<?php echo $browser_title; ?>"   >
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td valign="top"><b>Meta Keywords  : </b></td>
+	<td><textarea name="meta_keywords" id="meta_keywords" cols="47" rows="4"><?php echo $meta_keywords; ?></textarea></td>
+</tr>
+
+<tr class='table_row'>
+	<td valign="top"><b>Meta Description : </b></td>
+	<td><textarea name="meta_description" id="meta_description" cols="47" rows="4"><?php echo $meta_description; ?></textarea></td>
+</tr>
+
+<tr class='table_row'>
+	<td><b>Upload Main Image : </b></td>
+	<td><input type="file" name="picture" id="picture"  value="">
+	&nbsp;<strong>(200 x 200)</strong>&nbsp;<?php echo $img_name;?></td>
+</tr>
+
+<tr class='table_row'>
+	<td><b>Image ALT Text : </b></td>
+	<td><input type="text" name="image_alt" id="image_alt"  size="60" maxlength="100" value="<?php echo $image_alt;?>">
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td colspan="3"><b>Description : </b></td>
+</tr>
+<tr class='table_row'>
+    <td  colspan="3">
+	<?php
+		$contents = $description;
+		$oFCKeditor = new FCKeditor('description') ;
+		$oFCKeditor->BasePath	=  "fckeditor/" ;
+		$oFCKeditor->Value		= $contents;
+		$oFCKeditor->Create() ;
+	?>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td valign="top">&nbsp;<b>Position : </b></td>
+	 <td>
+		<select name="txtposition" id="txtposition">
+			<option value=''>Select Position</option>
+			<option value='1' <?php if($position==1){ echo "selected"; }?>>Top</option>
+			<option value='2' <?php if($position==2){ echo "selected"; }?>>Bottom</option>
+		</select>
+	 </td>
+</tr>
+ 
+<tr class='table_row'>
+	  <td colspan="2" align="center" >
+	  <?php if ($id != '') {?>
+		<input class="input-button" type="Submit" name="btnSave" value="Update Page" onClick="return check_formval();">		
+		<!--<input class="input-button" type="button" name="btndelete" value="Delete Page" onClick="fndelete();">-->
+	  <?php } else { ?>
+		<input class="input-button" type="Submit" name="btnSave" value="Add Page" onClick="return check_formval();">
+	  <?php } ?>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?page=page_list"><b>&laquo; Back</b></a></td>
+	</tr>	
+</table>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Admin User Type Details</title>
+</head>
+ 
+<script language="javascript">
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+    var token = document.getElementById('token').value;
+	if(ans)
+	{
+		document.location.href="index.php?page=admin_user_type_delete&singleid=<?php echo $id?>&token="+token;
+	}
+}
+
+function check_formval()
+{
+	var user_name = document.getElementById("user_name");
+	
+	if(user_name.value=="")
+	{
+		alert("User type should not be blank..");
+		user_name.focus();
+		return false;
+	}
+
+	if(document.getElementById("admin_user_management").checked==false && document.getElementById("excel_management").checked==false && document.getElementById("member_management").checked==false && document.getElementById("shape_management").checked==false && document.getElementById("cut_management").checked==false && document.getElementById("color_management").checked==false && document.getElementById("clarity_mangement").checked==false && document.getElementById("font_column_mangement").checked==false && document.getElementById("contact_us").checked==false)
+	{
+		alert("Please select at least one user access");
+		document.getElementById("admin_user_management").focus();
+		return false;
+	}
+	
+		
+}//function check_formval() 
+</script>
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form name="form1" method="post" action="index.php?page=admin_user_type_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="table_class">
+<tr class="table_title">
+	<td colspan="2" align="left">Admin User Type Details</td>
+</tr>	
+
+<tr class='table_row'>
+	<td width="19%" align="left"><b>User Type<span class="admin_error_msg">*</span> : </b></td>
+	<td width="81%" align="left"><input type="text" name="user_name" id="user_name" size="80" value="<?php echo $user_name; ?>" maxlength="150"></td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" valign="top"><b>User Access<span class="admin_error_msg">*</span> : </b></td>
+	<td width="81%">
+	<table border="0" cellspacing="1" cellpadding="1">
+		
+	<?php
+		$sql_maincat = "select * from user_authentication order by menu_order asc";
+		$qry_maincat = q($sql_maincat,$dbconnect);	
+		//print_r($exp_user_access);
+		$cnt=0;
+	?>		
+	<?php while($result_maincat = f($qry_maincat)){ ?>				
+		<tr>
+		<td>
+		
+		<input type="checkbox" name="user_access[]" id="user_access" value="<?php echo $result_maincat[paravalue]?>" <?php ?><?php if(in_array($result_maincat[paravalue],$exp_user_access,true)){?>checked="checked"<?php }?>/> <?php echo $result_maincat['name']?> </td>
+		</tr>
+		
+	<?php }?>
+	</table>
+	</td>
+</tr>
+
+<tr class='table_row'>
+	<td>&nbsp;</td> 	
+	<td align="left">	  
+		<?php  if ($id != '') {?>
+		<input class="input-button" type="Submit" name="btnSave" value="Update Type" onClick="return check_formval();">
+		<input class="input-button" type="button" name="btndelete" value="Delete Type" onClick="fndelete();">
+		<?php  } else { ?>
+		<input class="input-button" type="Submit" name="btnSave" value="Add Type" onClick="return check_formval();">
+		<?php  } ?>
+		<a href="index.php?page=admin_user_type_list"><b>&laquo; Back</b></a>
+	</td>
+</tr>	
+</table>
+</form>
+</body>
+</html>

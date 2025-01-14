@@ -1,0 +1,65 @@
+.gyr_logo{
+	float: left;
+	font-size: 23px;
+	font-weight: 400;
+	margin-left: 0px;
+	padding-bottom: 22px;
+	padding-top: 5px;
+}
+
+.floating-chat {
+	float:right;
+    background: none repeat scroll 0 0 transparent;
+    position:fixed;
+    top:105px;
+    width:auto;
+    z-index:5001;
+	right:3px;
+}
+.justify_content{text-align:justify;}
+.bg_leftbox{background-color:#FAFAFA; padding:0 10px 0 10px; border: 1px solid #EAEAEA; border-radius: 20px 20px 20px 20px;
+    moz-border-radius: 20px 20px 20px 20px; box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);}
+
+.bg_rightbox{background-color:#FAFAFA; padding:0 10px 0 10px; border: 1px solid #EAEAEA; border-radius: 20px 20px 20px 20px;
+    moz-border-radius: 20px 20px 20px 20px; box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);}
+
+.div_error
+{
+	color: #FF0000;
+	display: none;
+	float: left;
+	height: auto;
+	width: auto;
+	font-family: "Helvetica Neue" ,Helvetica,Arial,sans-serif;
+	font-size: 12px;
+}
+.captcha_link{	
+	color:#1D1F21;
+  font-size: 13px;
+  font-weight: 400;
+}
+.captcha_link:hover{	
+	color:#808080;
+}
+.succ
+{
+	float: left;
+	height: auto;
+	width: auto;
+	margin: 0 0 30px 100px;
+	font-family: "Helvetica Neue" ,Helvetica,Arial,sans-serif;
+	color: #006633;
+	font-size: 16px;
+	font-weight: bold;
+}
+.error
+{
+	float: left;
+	height: auto;
+	width: auto;
+	margin: 0 0 14px 150px;
+	color: #FF0000;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: "Helvetica Neue" ,Helvetica,Arial,sans-serif;
+}

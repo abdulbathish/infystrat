@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+<title>Recruitment Details</title>
+</head>
+
+<script language="javascript">
+function fndelete() {
+	var ans=confirm("Are you sure you want to delete?");
+	var token = document.getElementById('token').value;
+	if(ans)
+	{
+		document.location.href="index.php?page=job_delete&singleid=<?php echo $id?>&token="+token;
+	}
+}
+function check_formval()
+{
+	var jobname = document.getElementById("txtjobname");
+	//var noofpos = document.getElementById("txtnoofpos");
+	var location = document.getElementById("txtlocation");
+	var jobname_ne = document.getElementById("txtjobname_ne");
+	//var noofpos_ne = document.getElementById("txtnoofpos_ne");
+	var location_ne = document.getElementById("txtlocation_ne");
+	var qty = document.getElementById("qty");
+	var picture = document.getElementById("picture");
+	
+	if(jobname.value=="")
+	{
+		alert("Job name should not be blank..");
+		jobname.focus();
+		return false;
+	}
+	/*if(noofpos.value=="")
+	{
+		alert("No. of position should not be blank..");
+		noofpos.focus();
+		return false;
+	}*/
+	if(location.value=="")
+	{
+		alert("Location should not be blank..");
+		location.focus();
+		return false;
+	}
+	if(jobname_ne.value=="")
+	{
+		alert("Nederland job name should not be blank..");
+		jobname_ne.focus();
+		return false;
+	}
+	/*if(noofpos_ne.value=="")
+	{
+		alert("Nederland no. of position should not be blank..");
+		noofpos_ne.focus();
+		return false;
+	}*/
+	if(location_ne.value=="")
+	{
+		alert("Nederland location should not be blank..");
+		location_ne.focus();
+		return false;
+	}
+	/*if(qty.value=="")
+	{
+		alert("Quantity should not be blank..");
+		qty.focus();
+		return false;
+	}
+	if(picture.value!="")
+	{
+		var fileName=picture.value;
+		var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+		
+		if(ext!="jpg" && ext!="JPG" && ext!="png" && ext!="PNG" && ext!="gif" && ext!="GIF")
+		{
+			alert("Format of the uploaded file is not correct..");
+			picture.focus();
+			return false;
+		}
+	}*/
+	var inst = FCKeditorAPI.GetInstance("description");
+	
+}//function check_formval() 
+function showImage(impath)
+{ 
+	window.open(impath,"NewsImage","width=400,height=400,resizable=1");
+}
+function AddImagetr(curid)
+{
+	var curtrid = document.getElementById("curtrid").value;
+	var newtrid = (parseInt(curtrid)+1);
+	document.getElementById("img"+newtrid).style.display="";
+	document.getElementById("curtrid").value = newtrid;
+	if(newtrid == 100)	
+		document.getElementById("addtr").style.display="none";
+}
+</script>
+
+<script type="text/javascript">
+
+function fun_type(obj)
+{
+	if(obj==1){
+		document.getElementById("picture_div").style.display="";
+		document.getElementById("pdf_div").style.display="none";
+	}else if(obj==2){
+		document.getElementById("picture_div").style.display="none";
+		document.getElementById("pdf_div").style.display="";
+	}else{
+		document.getElementById("picture_div").style.display="none";
+		document.getElementById("pdf_div").style.display="none";
+	}
+		
+}
+</script>
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+
+<form name="form1" method="post" action="index.php?page=job_update" OnSubmit="return validateStandard(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+<input type="hidden" name="curtrid" id="curtrid" value="<?php echo $numimg;?>">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="table_class">
+<tr class="table_title">
+	<td colspan="2" align="left">Recruitment Details <?php echo $lang1;?></td>
+</tr>
+
+<tr id="prev_div" style="display:<?php echo $prev_div_status; ?>;">
+<td colspan="2">
+<table width="100%" border="0" cellpadding="3" cellspacing="3" >
+  
+<tr class='table_row'>
+	<td align="left">&nbsp;<b> Job Name <span class="admin_error_msg">*</span> : </b></td>
+	<td align="left"><input type="text" name="txtjobname" id="txtjobname" size="100" value="<?php echo utf8_decode($jobname); ?>" maxlength="200"></td>
+</tr>
+
+<tr class='table_row'>
+	<td align="left">&nbsp;<b> No. of Position <span class="admin_error_msg">*</span> : </b></td>
+	<td align="left"><input type="text" name="txtnoofpos" id="txtnoofpos" size="100" value="<?php echo utf8_decode($noofpos); ?>" maxlength="200"></td>
+</tr>
+
+<tr class='table_row'>
+	<td align="left">&nbsp;<b> Location <span class="admin_error_msg">*</span> : </b></td>
+	<td align="left"><input type="text" name="txtlocation" id="txtlocation" size="100" value="<?php echo utf8_decode($location); ?>" maxlength="200"></td>
+</tr>
+
+<tr class='table_row'>
+	<td align="left" valign="top">&nbsp;<b>Description : </b></td>
+	<td align="left">&nbsp;</td>
+</tr>	
+<tr class='table_row'>
+	<td  colspan="2">
+		<?php
+			$contents = utf8_decode($description);
+			$oFCKeditor = new FCKeditor('description') ;
+			$oFCKeditor->BasePath	=  "fckeditor/" ;
+			$oFCKeditor->Value		= $contents;
+			$oFCKeditor->Create() ;
+		?>
+	</td>
+</tr>
+
+
+</table>
+</td>
+</tr>
+
+
+
+<tr class='table_row'>
+<td width="19%" align="left">&nbsp;<b>Upload Image : </b></td>
+  <td width="81%" align="left"><input type="file" name="picture" id="picture" size="30" />&nbsp;&nbsp;<strong>(200 x 250)</strong>&nbsp;&nbsp;<?php echo $img_name;?></td>
+</tr>
+
+<tr class='table_row'>
+	<td width="19%" align="left">&nbsp;<b>Image ALT : </b></td>
+	<td width="81%" align="left"><input type="text" name="image_alt" id="image_alt" size="60" value="<?php echo $image_alt; ?>" maxlength="100"></td>
+</tr>
+
+<tr class='table_row'>
+	<td align="right" width="18%"><input type="checkbox" name="txtsethome" id="txtsethome" value="1" <?php echo $sethome?>></td>
+	<td valign="top" width="82%">Active </td>
+</tr>
+
+<!--<tr class='table_row'>
+	<td align="right"><input type="checkbox" name="active" id="active" value="1" <?php echo $active?>></td>
+	<td valign="top">Active </td>
+</tr>-->
+
+<tr class='table_row'>
+	<td>&nbsp;</td>
+	<td align="left">	  
+		<?php  if ($id != '') {?>
+		<input class="input-button" type="Submit" name="btnSave" value="Update" onClick="return check_formval();">
+		<input class="input-button" type="button" name="btndelete" value="Delete" onClick="fndelete();">
+		<?php } else { ?>
+		<input class="input-button" type="Submit" name="btnSave" value="Add" onClick="return check_formval();">
+		<?php } ?>
+		<a href="index.php?page=job_list"><b>&laquo; Back</b></a>
+	</td>
+</tr>	
+</table>
+ <!-- <hr color="#FF6633">-->
+</form>
+</body>
+</html>

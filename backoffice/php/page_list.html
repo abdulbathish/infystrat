@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>Page Managment</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+
+<script language="javascript">
+function fnSelect(obj)
+{
+		var comfList = document.forms[obj].elements["checkList[]"];		
+		var chkvalue;
+		var token = document.getElementById('token').value;
+		if (comfList.length) {        
+			var selected = false;   
+			for (var i = 0; i < comfList.length; i++) {
+				if(comfList[i].checked == true)
+				 {
+					selected = true; 
+					chkvalue=comfList[i].value + "," + chkvalue;
+				 }
+			}
+				if (! selected) {             
+					alert('Please select the page.');              
+					return false;         
+			    }
+		}
+		var ans=confirm("Are you sure you want to delete?");
+		if(ans)
+		{
+		document.location.href="index.php?page=page_delete&id="+chkvalue+"&token="+token;
+		}
+}
+
+function fnSerach()
+{
+	document.frm1.submit();
+}
+function fnStatus(userid,status)
+{
+	document.getElementById('userid1').value=userid;
+	document.getElementById('status1').value=status;
+	document.frm1.submit();
+}
+</script>
+<script type="text/javascript" src="js/check_all.js"></script>
+</head>
+<body>
+<?php
+	$token = md5(uniqid(rand(), true));
+	$_SESSION['token'] = $token;
+?>
+<form method="post" id="frm1" name="frm1" action="index.php?page=page_list">
+<input type="hidden" name="userid1" id="userid1" value="">
+<input type="hidden" name="status1" id="status1" value="">
+<input type="hidden" name="token" id="token" value="<?php echo $token; ?>">
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<?php  if($_GET[msg]!='') { ?>
+	  <tr>
+		<th class="admin_success_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg]?></th>		
+	  </tr>
+	  <?php  } ?>
+	  <?php  if($_GET[msg_error]!='') { ?>
+	  <tr>
+		<th class="admin_error_msg" height=22 colspan="7" align="center"><?php echo $_GET[msg_error]?></th>		
+	  </tr>
+	  <?php  } ?>
+	  <tr>
+		<td id="title_head"  colspan="3">
+				<table width="100%" border="0" cellspacing="1" cellpadding="1">
+					<tr>
+						<td id="title_head">&nbsp; Page list</td>
+					</tr>
+				</table>
+		</td>
+	  </tr>
+
+	  <tr>		
+		<td align="left" colspan="2">		
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td><strong>Search :</strong></td>
+					<td style="padding-left:8px;"><input type="text" name="search" value="<?php echo $name?>"></td>
+					<td><img  name="btnserach" class="input" src="images/button_search.jpg" style="cursor:pointer;" onClick="javascript: fnSerach();"/></td>
+				</tr>
+			</table>		
+		</td>
+	    <td align="right">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="67%" align="right"><a href="index.php?page=page_details" class="addepages-link">Add New</a></td>
+				<td width="10%"></td>
+				<!--<td width="20%"><input type="button"  class="input-button" name="btn1" value="Delete" onClick="javascript:fnSelect('frm1');"></td>-->
+			</tr>
+			</table> 
+		 </td>
+	 </tr>
+	</table>
+	
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_row_select">
+	  <tr class="table_title">
+		<td align="center" height=22 width="96" style="border-right:1px solid #fff;">Sr.No.</td>
+        <td width="500" align="left" style="border-right:1px solid #fff;">&nbsp;Page Title</td>
+		<td width="200" align="left" style="border-right:1px solid #fff;">Position</td>
+		<td width="200" align="center" style="border-right:1px solid #fff;">Subpages</td>
+		<td width="200" align="center" style="border-right:1px solid #fff;">Page Order</td> 
+		<td width="174" height=22 align="center" style="border-right:1px solid #fff;">&nbsp;Status</td>
+		<td align="center" width="137" style="border-right:1px solid #fff;">&nbsp;Edit</td>
+		<!--<td width="108" align="center" style="border-right:1px solid #fff;">
+		<input name="checkAll" id="checkAll" type="checkbox" value="Check All Boxes" onClick="javascript:check_all('frm1', this);">
+		&nbsp; 
+		</td>-->
+	  </tr>
+	 <?php echo $text; ?>
+	 <tr>
+		<td height=22 colspan="4" align="center">&nbsp; </td>
+		<td width="188" align="center"><input type="submit" class="input-button" name="updateOrder" value="update" onClick="UpdateOrder();" /></td>		
+		<td width="188" colspan="6" align="center">&nbsp;</td>
+	  </tr> 
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+		<td align="right" class="table_title"> <?php echo $pageList; ?></td>
+		</tr>
+		</table>
+		</th>
+      </tr>
+	</table>
+</form>
+</body>
+</html>
